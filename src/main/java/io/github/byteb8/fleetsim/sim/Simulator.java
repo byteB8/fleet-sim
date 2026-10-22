@@ -230,9 +230,11 @@ public final class Simulator {
         // so surplus robots wait in bays instead of crowding the corridor in front of it.
         int want = Math.max(1, cands.size() * cfg.assignBatch);
         List<Task> open = new ArrayList<>();
+        int[] slots = stationLoad.clone();
         for (Task task : pending) {
             if (open.size() == want) break;
-            if (cfg.stationCap > 0 && stationLoad[task.drop] >= cfg.stationCap) continue;
+            if (cfg.stationCap > 0 && slots[task.drop] >= cfg.stationCap) continue;
+            slots[task.drop]++;
             open.add(task);
         }
         if (open.isEmpty()) return;

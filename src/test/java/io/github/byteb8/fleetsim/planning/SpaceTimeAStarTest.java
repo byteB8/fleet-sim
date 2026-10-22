@@ -89,6 +89,25 @@ class SpaceTimeAStarTest {
     }
 
     @Test
+    void baysAreNotPullOverPockets() {
+        GridMap m = GridMap.parse("""
+                #####
+                .....
+                ##P##
+                """);
+        ReservationTable t = new ReservationTable();
+        int start = m.index(0, 1), goal = m.index(4, 1);
+        t.reserveStay(7, m.index(3, 1), 2, 4); // blocks the corridor for a while
+        SpaceTimeAStar a = new SpaceTimeAStar(m);
+        int[] path = a.plan(t, 0, start, goal, 0, 10, DistanceField.computeToGoal(m, goal));
+        assertNotNull(path);
+        for (int c : path) assertNotEquals(m.index(2, 2), c, "waited in the corridor, not in the bay");
+        int[] toBay = a.plan(t, 0, start, m.index(2, 2), 0, 10, DistanceField.computeToGoal(m, m.index(2, 2)));
+        assertNotNull(toBay);
+        assertEquals(m.index(2, 2), toBay[10], "the bay is reachable when it is the goal");
+    }
+
+    @Test
     void boxedInAgentCannotPlan() {
         ReservationTable t = new ReservationTable();
         GridMap m = GridMap.parse("""

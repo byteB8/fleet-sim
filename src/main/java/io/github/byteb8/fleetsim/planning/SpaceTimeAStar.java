@@ -83,6 +83,8 @@ public final class SpaceTimeAStar {
             for (Dir d : Dir.ALL) {
                 int to = map.step(cell, d);
                 if (to < 0 || distToGoal[to] == DistanceField.UNREACHABLE) continue;
+                // Stations and bays are entered only as a destination, never as a pull-over pocket.
+                if (to != goal && map.type(to) != GridMap.FREE) continue;
                 if (!table.vertexFree(to, nt, agent)) continue;
                 if (!table.edgeFree(cell, to, t, agent)) continue;
                 relax(to, nk, key, distToGoal[to], window);

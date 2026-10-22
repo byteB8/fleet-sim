@@ -95,6 +95,31 @@ class SimulatorTest {
     }
 
     @Test
+    void stationCapBoundsTasksInFlight() {
+        SimConfig c = small();
+        c.robots = 20;
+        c.ticks = 400;
+        c.stationCap = 2;
+        Simulator sim = new Simulator(c);
+        java.lang.reflect.Method step;
+        try {
+            step = Simulator.class.getDeclaredMethod("step");
+            step.setAccessible(true);
+            java.lang.reflect.Field tf = Simulator.class.getDeclaredField("t");
+            tf.setAccessible(true);
+            for (int t = 0; t < 400; t++) {
+                tf.setInt(sim, t);
+                step.invoke(sim);
+                int inFlight = 0;
+                for (Robot r : sim.robots()) if (r.state.hasTask()) inFlight++;
+                assertTrue(inFlight <= 2 * 3, "tick " + t + ": " + inFlight + " tasks in flight");
+            }
+        } catch (ReflectiveOperationException e) {
+            throw new AssertionError(e);
+        }
+    }
+
+    @Test
     void crowdedFleetRunsWithoutViolations() {
         // 100 robots on the default 62x27 floor once produced a collision through a forced stay
         // that silently overwrote another robot's reservation (tick 1863 of this run).
