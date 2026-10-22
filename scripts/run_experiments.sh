@@ -46,11 +46,12 @@ for c in threshold opportunistic; do
   done
 done
 
-echo "== E5 planning window"
-for w in "8 4" "16 8" "32 16" "64 32"; do
+echo "== E5 planning window (64 is one short seed: it costs about 60 ms per tick)"
+for w in "8 4" "16 8" "32 16"; do
   set -- $w
   for s in $SEEDS; do run "window/w$1_n60_s${s}" --robots 60 --ticks $TICKS --window $1 --replan $2 --seed $s; done
 done
+run "window/w64_n60_s1" --robots 60 --ticks 3600 --window 64 --replan 32 --seed 1
 
 echo "== E6 CBS versus the prioritized planner"
 mkdir -p $RAW/cbs

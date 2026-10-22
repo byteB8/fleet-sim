@@ -358,6 +358,13 @@ public final class Simulator {
             forceFullReplan = false;
             fullReplan();
         } else {
+            // A robot that could reach its goal within the window but has a path that does not get
+            // there is waiting for something (a busy station, a queue). Re-plan it every tick so it
+            // moves the moment the way is free instead of at the next full replan.
+            for (Robot r : robots) {
+                if (r.needsPlan || r.goal < 0 || !r.state.moving() || r.path == null) continue;
+                if (r.path[r.path.length - 1] != r.goal && df.toGoal(r.goal)[r.cell] <= cfg.window) r.needsPlan = true;
+            }
             ArrayDeque<Robot> work = new ArrayDeque<>();
             for (Robot r : robots) if (r.needsPlan) work.add(r);
             List<Integer> evicted = new ArrayList<>();
@@ -370,8 +377,10 @@ public final class Simulator {
                 r.path = planner.replanOne(t, horizon, r.id, r.cell, goal, failed, evicted);
                 r.pathT0 = t;
                 metrics.eventReplans++;
-                // Boxed in by reservations made before it had a goal: let the next tick re-rank everyone.
-                if (failed[0]) forceFullReplan = true;
+                // Boxed in by reservations made before it had a goal, or stuck inside a bay whose only
+                // exit is reserved by a queued robot: a plan that never leaves the cell is not progress.
+                // Let the next tick re-rank everyone, where a robot leaving a bay goes first.
+                if (failed[0] || (leavingBay(r) && r.path[r.path.length - 1] == r.cell)) forceFullReplan = true;
                 // Whoever lost reservations to this forced stay must be re-planned right now.
                 for (int id : evicted) {
                     Robot e = robots[id];
