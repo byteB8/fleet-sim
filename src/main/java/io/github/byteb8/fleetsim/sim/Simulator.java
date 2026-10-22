@@ -217,6 +217,8 @@ public final class Simulator {
             case IDLE, PARKED -> !charging.mustCharge(r);
             case CHARGING -> charging.availableWhileCharging(r) && !charging.mustCharge(r);
             case TO_PARK -> !charging.mustCharge(r);
+            // An opportunistic trip to a charger can be interrupted; a forced one cannot.
+            case TO_CHARGER -> !r.forcedCharge && charging.availableWhileCharging(r) && !charging.mustCharge(r);
             default -> false;
         };
     }
@@ -260,6 +262,7 @@ public final class Simulator {
             bays.release(r.bay);
             r.bay = -1;
             r.wantsCharger = false;
+            r.forcedCharge = false;
             stationLoad[task.drop]++;
             if (log != null && t < cfg.logTicks) log.event(t, "assign", task.id, r.id, r.cell);
         }
@@ -432,7 +435,7 @@ public final class Simulator {
         for (int i = 0; i < n; i++) {
             Robot r = robots[i];
             boolean moved = next[i] != r.cell;
-            boolean unavailable = r.state == RobotState.TO_CHARGER
+            boolean unavailable = (r.state == RobotState.TO_CHARGER && r.forcedCharge)
                     || (r.state == RobotState.CHARGING && !charging.availableWhileCharging(r));
             if (unavailable) metrics.ticksUnavailable++;
             if (moved) {

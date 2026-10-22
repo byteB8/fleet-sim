@@ -34,6 +34,11 @@ for n in 40 60; do
   done
 done
 
+echo "== E3b one-way 1-wide aisles with a tighter admission cap"
+for n in 40 60; do
+  for s in $SEEDS; do run "layout/a1_oneway_cap4_n${n}_s${s}" --robots $n --ticks $TICKS --aisle 1 --one-way true --station-cap 4 --seed $s; done
+done
+
 echo "== E4 charging: threshold vs opportunistic over an 8 h shift at about 70% load"
 for c in threshold opportunistic; do
   for s in $SEEDS; do

@@ -147,17 +147,18 @@ def fig_layout(dark):
     if not rows:
         return
     sizes = sorted({d["config"]["robots"] for d in rows})
-    names = ["a2_twoway", "a1_twoway", "a1_oneway", "a2_oneway"]
-    labels = {"a2_twoway": "2-wide, two-way", "a1_twoway": "1-wide, two-way", "a1_oneway": "1-wide, one-way", "a2_oneway": "2-wide, one-way"}
+    names = ["a2_twoway", "a1_twoway", "a2_oneway", "a1_oneway", "a1_oneway_cap4"]
+    labels = {"a2_twoway": "2-wide, two-way", "a1_twoway": "1-wide, two-way", "a2_oneway": "2-wide, one-way",
+              "a1_oneway": "1-wide, one-way", "a1_oneway_cap4": "1-wide, one-way, cap 4"}
     thr, fail = {}, {}
     for nme in names:
-        sub = [d for d in rows if d["name"].startswith(nme + "_")]
+        sub = [d for d in rows if d["name"].startswith(nme + "_n")]
         thr[labels[nme]] = agg(sub, lambda d: d["config"]["robots"], "throughputPerHour")
         fail[labels[nme]] = agg(sub, lambda d: d["config"]["robots"], "planFailures")
         note("layout", nme, thr[labels[nme]], "throughputPerHour")
         note("layout", nme, fail[labels[nme]], "planFailures")
     fig, axes = plt.subplots(1, 2, figsize=(10, 3.6))
-    cols = [C["blue"], C["grey"], C["green"], C["orange"]]
+    cols = [C["blue"], C["grey"], C["orange"], C["red"], C["green"]]
     bars(axes[0], sizes, [labels[n] for n in names], thr, cols, "tasks per hour", "Throughput by aisle layout")
     bars(axes[1], sizes, [labels[n] for n in names], fail, cols, "forced stays in 2 h", "Planner failures by layout")
     axes[1].set_yscale("symlog")
