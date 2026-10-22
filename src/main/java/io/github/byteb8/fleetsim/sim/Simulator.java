@@ -78,10 +78,10 @@ public final class Simulator {
         boolean[] used = new boolean[map.size()];
         for (int i = 0; i < robots.length; i++) {
             double battery = 60 + 40.0 * i / Math.max(1, robots.length - 1);
-            int cell = bays.claimCharger(0);
+            int cell = bays.claimFirstFree(true);
             RobotState st = RobotState.CHARGING;
             if (cell < 0) {
-                cell = bays.claimParking(0);
+                cell = bays.claimFirstFree(false);
                 st = RobotState.PARKED;
             }
             if (cell < 0) {

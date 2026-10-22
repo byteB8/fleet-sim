@@ -62,6 +62,18 @@ final class Bays {
         return c;
     }
 
+    /** Claims the lowest-index free charger (or parking bay when {@code charger} is false), or -1. */
+    int claimFirstFree(boolean charger) {
+        for (int c : charger ? chargers : parking) {
+            if (taken[c]) continue;
+            taken[c] = true;
+            if (charger) freeChargers--;
+            else freeParking--;
+            return c;
+        }
+        return -1;
+    }
+
     void release(int cell) {
         if (cell < 0 || !taken[cell]) return;
         taken[cell] = false;

@@ -132,6 +132,23 @@ class SimulatorTest {
     }
 
     @Test
+    void robotsStartInBays() {
+        SimConfig c = small();
+        c.robots = 15;
+        Simulator sim = new Simulator(c);
+        int chargers = 0, parked = 0;
+        for (Robot r : sim.robots()) {
+            byte type = sim.map().type(r.cell);
+            assertTrue(type == io.github.byteb8.fleetsim.grid.GridMap.CHARGER || type == io.github.byteb8.fleetsim.grid.GridMap.PARKING,
+                    "robot " + r.id + " starts on cell type " + type);
+            if (r.state == RobotState.CHARGING) chargers++;
+            if (r.state == RobotState.PARKED) parked++;
+        }
+        assertEquals(6, chargers);
+        assertEquals(9, parked);
+    }
+
+    @Test
     void rejectsBadConfig() {
         SimConfig c = small();
         c.replanEvery = c.window + 1;
