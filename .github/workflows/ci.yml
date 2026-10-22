@@ -1,0 +1,28 @@
+name: ci
+on:
+  push:
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - name: Build and test
+        run: mvn -B package
+      - name: Smoke run with event log
+        run: |
+          java -jar target/fleet-sim-0.1.0.jar --print-map > /tmp/map.txt
+          java -jar target/fleet-sim-0.1.0.jar --robots 30 --ticks 900 --log /tmp/log --out /tmp/run.json
+          java -jar target/fleet-sim-0.1.0.jar --robots 30 --ticks 600 --aisle 1 --one-way true --print-map > /tmp/map1.txt
+          java -jar target/fleet-sim-0.1.0.jar --robots 30 --ticks 600 --aisle 1 --one-way true --log /tmp/log1
+      - name: Independent log check
+        run: |
+          python3 scripts/check_log.py /tmp/log /tmp/map.txt
+          python3 scripts/check_log.py /tmp/log1 /tmp/map1.txt
+      - name: CBS benchmark (small)
+        run: java -cp target/fleet-sim-0.1.0.jar io.github.byteb8.fleetsim.cli.CbsBench --instances 20 --agents 2,4,6 --limit-ms 2000
