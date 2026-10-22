@@ -88,6 +88,32 @@ class CooperativePlannerTest {
     }
 
     @Test
+    void forcedStayEvictsWhoeverPlannedThroughTheCell() {
+        GridMap m = GridMap.parse("""
+                .....
+                """);
+        CooperativePlanner p = new CooperativePlanner(m, new DistanceField(m), 6);
+        boolean[] failed = new boolean[1];
+        int[][] paths = p.replanAll(0, new int[] {m.index(0, 0)}, new int[] {m.index(4, 0)}, new int[] {0}, failed);
+        assertEquals(m.index(3, 0), paths[0][3]);
+        assertEquals(0, p.table().ownerAt(m.index(3, 0), 3));
+        // A second agent must now dwell on (3,0) from tick 1: agent 0 planned through it and is evicted.
+        java.util.List<Integer> evicted = new java.util.ArrayList<>();
+        boolean[] f = new boolean[1];
+        int[] stay = p.replanOne(1, 6, 1, m.index(3, 0), m.index(3, 0), f, evicted);
+        assertFalse(f[0], "being at the goal is not a failure");
+        assertEquals(6, stay.length);
+        for (int c : stay) assertEquals(m.index(3, 0), c);
+        assertEquals(java.util.List.of(0), evicted);
+        assertEquals(ReservationTable.NONE, p.table().ownerAt(m.index(4, 0), 5), "agent 0 lost all its reservations");
+        assertEquals(1, p.table().ownerAt(m.index(3, 0), 3));
+        // Re-planning agent 0 now makes it wait behind the dwelling agent.
+        int[] again = p.replanOne(1, 6, 0, m.index(1, 0), m.index(4, 0), f, evicted);
+        assertFalse(f[0]);
+        assertTrue(CooperativePlanner.conflictFree(new int[][] {again, stay}));
+    }
+
+    @Test
     void replanOneRespectsExistingReservations() {
         GridMap m = GridMap.parse("""
                 .....
@@ -99,7 +125,9 @@ class CooperativePlannerTest {
         boolean[] failed = new boolean[2];
         int[][] paths = p.replanAll(0, starts, goals, new int[] {0, 1}, failed);
         boolean[] f1 = new boolean[1];
-        int[] p1 = p.replanOne(3, 8, 1, m.index(4, 0), m.index(0, 0), f1);
+        java.util.List<Integer> evicted = new java.util.ArrayList<>();
+        int[] p1 = p.replanOne(3, 8, 1, m.index(4, 0), m.index(0, 0), f1, evicted);
+        assertTrue(evicted.isEmpty());
         assertFalse(f1[0]);
         assertEquals(6, p1.length);
         int[][] both = new int[2][6];

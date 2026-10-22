@@ -5,6 +5,7 @@ import io.github.byteb8.fleetsim.grid.GridMap;
 
 import java.util.ArrayDeque;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Windowed hierarchical cooperative A* (Silver, 2005) over all agents.
@@ -117,26 +118,32 @@ public final class CooperativePlanner {
 
     /**
      * Plans one agent against the current table from tick {@code t} up to {@code horizon},
-     * releasing its previous reservations first. If no plan exists the agent is reserved in place.
+     * releasing its previous reservations first. If no plan exists, or the agent is at its goal,
+     * it is reserved in place; any other agent that had planned through that cell loses its
+     * reservations and is returned in {@code evicted}, and the caller must re-plan those agents.
      *
      * @return the path for ticks t..horizon; {@code failed[0]} tells whether it is a forced stay
      */
-    public int[] replanOne(int t, int horizon, int agent, int start, int goal, boolean[] failed) {
-        int w = horizon - t;
+    public int[] replanOne(int t, int horizon, int agent, int start, int goal, boolean[] failed, List<Integer> evicted) {
+        int w = Math.max(0, horizon - t);
         table.release(agent);
         failed[0] = false;
-        if (w <= 0) {
-            table.reserveStay(agent, start, t, t);
-            return new int[] {start};
-        }
-        int[] path = (goal == start) ? null : astar.plan(table, agent, start, goal, t, w, distances.toGoal(goal));
+        int[] path = (goal == start || w == 0) ? null : astar.plan(table, agent, start, goal, t, w, distances.toGoal(goal));
         if (path == null) {
-            if (goal != start) {
+            if (goal != start && w > 0) {
                 failures++;
                 failed[0] = true;
             }
             path = new int[w + 1];
             Arrays.fill(path, start);
+            for (int u = t + 1; u <= horizon; u++) {
+                int o = table.ownerAt(start, u);
+                if (o != ReservationTable.NONE && o != agent) {
+                    table.release(o);
+                    if (!evicted.contains(o)) evicted.add(o);
+                    cascades++;
+                }
+            }
             table.reserveStay(agent, start, t, horizon);
             return path;
         }
