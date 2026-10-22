@@ -19,11 +19,11 @@ public final class ReservationTable {
     private final LongIntMap edge = new LongIntMap(1 << 14);
     private final Map<Integer, LongList[]> byAgent = new HashMap<>();
 
-    static long vkey(int cell, int t) {
+    public static long vkey(int cell, int t) {
         return ((long) t << 32) | (cell & 0xFFFFFFFFL);
     }
 
-    static long ekey(int from, int to, int t) {
+    public static long ekey(int from, int to, int t) {
         return ((long) t << 42) | ((long) from << 21) | to;
     }
 
