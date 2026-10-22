@@ -21,7 +21,10 @@ with the Python script.
 
 ### Throughput against fleet size, and why admission control exists
 
-![throughput and forced stays against fleet size](docs/figures/fleet-light.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/fleet-dark.png">
+  <img alt="throughput and forced stays against fleet size" src="docs/figures/fleet-light.png">
+</picture>
 
 | robots | 10 | 20 | 30 | 40 | 50 | 60 | 80 | 100 | 120 |
 |---|---|---|---|---|---|---|---|---|---|
@@ -38,13 +41,32 @@ while the planner reports tens of thousands of boxed-in robots. With at most 8 t
 station in flight, surplus robots wait in bays and the forced-stay count stays below 0.1 per
 tick even at 120 robots.
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/heatmap-dark.png">
+  <img alt="traffic heat map of a 60-robot hour" src="docs/figures/heatmap-light.png">
+</picture>
+
+Where the time goes: one hour of 60 robots with cap 8 (`--log`, then `scripts/heatmap.py`).
+Through-traffic spreads evenly over the aisles and cross aisles at a few hundred robot-ticks
+per cell. The hot spots are the six cells just outside the stations, with over a thousand
+robot-ticks each, almost all of them waiting for the robot inside to finish. That picture is
+why admission control works: it bounds exactly the crowd that those six cells can hold.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/scaling-dark.png">
+  <img alt="planning time per simulated second against fleet size" src="docs/figures/scaling-light.png">
+</picture>
+
 Planning cost with cap 8: 0.04 ms per simulated second at 10 robots, 0.47 ms at 60 and
 0.55 ms at 120, so a two-hour shift of 120 robots simulates in 4.2 s of wall time, about
 1,700 times faster than real time, on a laptop (i5-1035G1).
 
 ### Task assignment: Hungarian against greedy
 
-![assigner comparison](docs/figures/assigner-light.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/assigner-dark.png">
+  <img alt="assigner comparison" src="docs/figures/assigner-light.png">
+</picture>
 
 | robots | 20 | 40 | 60 |
 |---|---|---|---|
@@ -60,7 +82,10 @@ protect far ones enough. That weight is the obvious thing to tune next.
 
 ### Aisle width and one-way lanes
 
-![layout comparison](docs/figures/layout-light.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/layout-dark.png">
+  <img alt="layout comparison" src="docs/figures/layout-light.png">
+</picture>
 
 | tasks/h at 40 / 60 robots | 2-wide two-way | 1-wide two-way | 2-wide one-way | 1-wide one-way | 1-wide one-way, cap 4 |
 |---|---|---|---|---|---|
@@ -76,7 +101,10 @@ Deadlock detection on one-way graphs is the natural next feature.
 
 ### Charging policy over an 8-hour shift
 
-![charging comparison](docs/figures/charging-light.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/charging-dark.png">
+  <img alt="charging comparison" src="docs/figures/charging-light.png">
+</picture>
 
 40 robots, Poisson arrivals at 0.4 tasks per second (about 70% of capacity), 4 h of driving per
 charge, 1 h to recharge, 12 chargers. Both policies complete about 11,400 tasks.
@@ -97,6 +125,11 @@ interruptible, otherwise the trips to the far edge cost more than the charging g
 
 ### Planning window
 
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/window-dark.png">
+  <img alt="throughput and planning cost against the planning window" src="docs/figures/window-light.png">
+</picture>
+
 | window / replan period (ticks) | 8 / 4 | 16 / 8 | 32 / 16 | 64 / 32 (one seed, 1 h) |
 |---|---|---|---|---|
 | tasks/h, 60 robots | 2,784 | 2,864 | 2,887 | 2,946 |
@@ -110,7 +143,10 @@ next scheduled replan; that is now detected and forces a replan at once.
 
 ### How far from optimal is the prioritized planner?
 
-![CBS comparison](docs/figures/cbs-light.png)
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/cbs-dark.png">
+  <img alt="CBS comparison" src="docs/figures/cbs-light.png">
+</picture>
 
 100 random instances per size on a 24 x 16 warehouse, sum of costs, CBS time limit 5 s.
 
@@ -134,6 +170,14 @@ corridor round the edge, pick stations along the bottom edge, chargers along the
 parking bays on the remaining edge cells. The default floor is 62 x 27 cells with 24 shelf
 blocks, 6 stations and 12 chargers. Stations and bays are single-exit cells: a robot may enter
 one only when it is the destination, and may leave only towards the corridor.
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/figures/layouts-dark.png">
+  <img alt="the four floor layouts used in the experiments" src="docs/figures/layouts-light.png">
+</picture>
+
+The four floors used below. Arrows mark one-way cells; crossings stay two-way so a robot can
+always turn into a cross aisle.
 
 Tasks arrive either as a Poisson stream or as a saturated backlog (there is always work).
 A task is "go to a cell beside shelf X, dwell 3 s, deliver to station Y, dwell 3 s". Robots run
@@ -224,6 +268,7 @@ java -jar target/fleet-sim-0.1.0.jar --robots 40 --ticks 600 --log log --print-m
 python3 scripts/check_log.py log map.txt
 java -cp target/fleet-sim-0.1.0.jar io.github.byteb8.fleetsim.cli.CbsBench --instances 50 --agents 2,4,6,8
 scripts/run_experiments.sh && python3 scripts/plots.py   # every number in this README
+python3 scripts/heatmap.py log map.txt docs/figures/heatmap  # traffic heat map of a logged run
 ```
 
 `--print-map` shows the floor: `#` shelf, `.` free, `S` station, `C` charger, `P` parking bay,
@@ -239,7 +284,7 @@ src/main/java/io/github/byteb8/fleetsim/
   assign/    Assigner, GreedyAssigner, HungarianAssigner
   sim/       SimConfig, Simulator, Robot, RobotState, Task, Bays, ChargingPolicy, Metrics, EventLog
   cli/       Main, CbsBench
-scripts/     check_log.py, run_experiments.sh, plots.py, animate.py
+scripts/     check_log.py, run_experiments.sh, plots.py, animate.py, heatmap.py, draw_map.py
 results/     raw/ (one JSON per run), summary.csv
 ```
 
