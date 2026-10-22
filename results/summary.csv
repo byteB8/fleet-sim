@@ -1,0 +1,165 @@
+experiment,key,config,metric,mean,std,n
+fleet,cap0,10,throughputPerHour,627.833,3.274,3
+fleet,cap0,100,throughputPerHour,92.333,14.924,3
+fleet,cap0,120,throughputPerHour,94.0,8.436,3
+fleet,cap0,20,throughputPerHour,1212.833,2.014,3
+fleet,cap0,30,throughputPerHour,1751.167,6.944,3
+fleet,cap0,40,throughputPerHour,1374.667,772.585,3
+fleet,cap0,50,throughputPerHour,561.5,172.951,3
+fleet,cap0,60,throughputPerHour,180.333,88.435,3
+fleet,cap0,80,throughputPerHour,115,43.367,3
+fleet,cap0,10,planFailures,0,0.0,3
+fleet,cap0,100,planFailures,76946,6578.492,3
+fleet,cap0,120,planFailures,188114,8709.512,3
+fleet,cap0,20,planFailures,4,2.944,3
+fleet,cap0,30,planFailures,47.667,18.209,3
+fleet,cap0,40,planFailures,7893,7875.936,3
+fleet,cap0,50,planFailures,17080.667,939.264,3
+fleet,cap0,60,planFailures,22008.333,307.836,3
+fleet,cap0,80,planFailures,50903.333,22093.684,3
+fleet,cap8,10,throughputPerHour,626.0,4.416,3
+fleet,cap8,100,throughputPerHour,2906.0,16.975,3
+fleet,cap8,120,throughputPerHour,2920.167,15.068,3
+fleet,cap8,20,throughputPerHour,1218,2.944,3
+fleet,cap8,30,throughputPerHour,1788.0,8.134,3
+fleet,cap8,40,throughputPerHour,2291.5,16.618,3
+fleet,cap8,50,throughputPerHour,2615.833,16.745,3
+fleet,cap8,60,throughputPerHour,2864.333,26.684,3
+fleet,cap8,80,throughputPerHour,2889.167,13.542,3
+fleet,cap8,10,planFailures,0,0.0,3
+fleet,cap8,100,planFailures,491.667,45.901,3
+fleet,cap8,120,planFailures,528,34.127,3
+fleet,cap8,20,planFailures,0.667,0.471,3
+fleet,cap8,30,planFailures,12.333,3.399,3
+fleet,cap8,40,planFailures,53.667,6.182,3
+fleet,cap8,50,planFailures,140.667,10.143,3
+fleet,cap8,60,planFailures,380.667,28.894,3
+fleet,cap8,80,planFailures,474.333,33.708,3
+fleet,cap8,10,planningMsPerTick,0.038,0.001,3
+fleet,cap8,100,planningMsPerTick,0.712,0.097,3
+fleet,cap8,120,planningMsPerTick,0.547,0.007,3
+fleet,cap8,20,planningMsPerTick,0.077,0.004,3
+fleet,cap8,30,planningMsPerTick,0.17,0.017,3
+fleet,cap8,40,planningMsPerTick,0.361,0.08,3
+fleet,cap8,50,planningMsPerTick,0.407,0.017,3
+fleet,cap8,60,planningMsPerTick,0.468,0.011,3
+fleet,cap8,80,planningMsPerTick,0.502,0.01,3
+fleet,cap8,10,wallMs,348.687,2.854,3
+fleet,cap8,100,wallMs,5488.217,735.708,3
+fleet,cap8,120,wallMs,4226.957,62.644,3
+fleet,cap8,20,wallMs,639.95,27.067,3
+fleet,cap8,30,wallMs,1337.6,134.745,3
+fleet,cap8,40,wallMs,2784.177,624.293,3
+fleet,cap8,50,wallMs,3133.307,142.708,3
+fleet,cap8,60,wallMs,3564.97,87.081,3
+fleet,cap8,80,wallMs,3846.42,74.526,3
+assigner,greedy,20,throughputPerHour,1047.167,4.17,3
+assigner,greedy,40,throughputPerHour,2005.167,7.261,3
+assigner,greedy,60,throughputPerHour,2858.167,22.878,3
+assigner,greedy,20,latencyP95,247.333,0.471,3
+assigner,greedy,40,latencyP95,319,9.899,3
+assigner,greedy,60,latencyP95,467,73.244,3
+assigner,greedy,20,latencyP50,201.333,0.943,3
+assigner,greedy,40,latencyP50,201.667,0.943,3
+assigner,greedy,60,latencyP50,177.667,8.576,3
+assigner,hungarian,20,throughputPerHour,1218,2.944,3
+assigner,hungarian,40,throughputPerHour,2291.5,16.618,3
+assigner,hungarian,60,throughputPerHour,2864.333,26.684,3
+assigner,hungarian,20,latencyP95,229.667,1.7,3
+assigner,hungarian,40,latencyP95,390,71.796,3
+assigner,hungarian,60,latencyP95,475,60.948,3
+assigner,hungarian,20,latencyP50,171.333,0.471,3
+assigner,hungarian,40,latencyP50,161.667,9.393,3
+assigner,hungarian,60,latencyP50,176,7.071,3
+layout,a2_twoway,40,throughputPerHour,2291.5,16.618,3
+layout,a2_twoway,60,throughputPerHour,2864.333,26.684,3
+layout,a2_twoway,40,planFailures,53.667,6.182,3
+layout,a2_twoway,60,planFailures,380.667,28.894,3
+layout,a1_twoway,40,throughputPerHour,2237.167,4.089,3
+layout,a1_twoway,60,throughputPerHour,2619.333,11.954,3
+layout,a1_twoway,40,planFailures,381,8.641,3
+layout,a1_twoway,60,planFailures,2326.333,116.391,3
+layout,a2_oneway,40,throughputPerHour,2008.833,15.515,3
+layout,a2_oneway,60,throughputPerHour,2635.833,28.961,3
+layout,a2_oneway,40,planFailures,92.667,14.704,3
+layout,a2_oneway,60,planFailures,643.333,37.25,3
+layout,a1_oneway,40,throughputPerHour,1723.5,603.541,3
+layout,a1_oneway,60,throughputPerHour,1015.5,1178.405,3
+layout,a1_oneway,40,planFailures,4607.333,6143.113,3
+layout,a1_oneway,60,planFailures,25095.333,27445.21,3
+layout,a1_oneway_cap4,40,throughputPerHour,1634.333,19.306,3
+layout,a1_oneway_cap4,60,throughputPerHour,1686.167,10.957,3
+layout,a1_oneway_cap4,40,planFailures,95,59.419,3
+layout,a1_oneway_cap4,60,planFailures,52.333,2.357,3
+charging,threshold,8 h shift,latencyP95,1608.667,473.502,3
+charging,opportunistic,8 h shift,latencyP95,77.667,0.471,3
+charging,threshold,8 h shift,availability,0.901,0.0,3
+charging,opportunistic,8 h shift,availability,0.997,0.001,3
+charging,threshold,8 h shift,forcedCharges,40,0.0,3
+charging,opportunistic,8 h shift,forcedCharges,0,0.0,3
+charging,threshold,8 h shift,backlogMax,693,190.59,3
+charging,opportunistic,8 h shift,backlogMax,4.667,0.943,3
+charging,threshold,8 h shift,latencyP50,67,2.944,3
+charging,threshold,8 h shift,latencyMean,404.533,131.174,3
+charging,threshold,8 h shift,throughputPerHour,1425.71,18.161,3
+charging,threshold,8 h shift,fracCharging,0.097,0.0,3
+charging,threshold,8 h shift,tasksArrived,11428.667,145.498,3
+charging,threshold,8 h shift,tasksCompleted,11405.667,145.305,3
+charging,opportunistic,8 h shift,latencyP50,47,0.0,3
+charging,opportunistic,8 h shift,latencyMean,48.818,0.21,3
+charging,opportunistic,8 h shift,throughputPerHour,1426.167,18.019,3
+charging,opportunistic,8 h shift,fracCharging,0.104,0.001,3
+charging,opportunistic,8 h shift,tasksArrived,11428.667,145.498,3
+charging,opportunistic,8 h shift,tasksCompleted,11409.333,144.151,3
+window,n60,16,throughputPerHour,2864.333,26.684,3
+window,n60,32,throughputPerHour,2887.167,24.394,3
+window,n60,64,throughputPerHour,2946,0.0,1
+window,n60,8,throughputPerHour,2783.833,20.27,3
+window,n60,16,planningMsPerTick,0.47,0.008,3
+window,n60,32,planningMsPerTick,4.402,0.104,3
+window,n60,64,planningMsPerTick,63.356,0.0,1
+window,n60,8,planningMsPerTick,0.166,0.005,3
+window,n60,16,planFailures,380.667,28.894,3
+window,n60,32,planFailures,83.667,5.558,3
+window,n60,64,planFailures,50,0.0,1
+window,n60,8,planFailures,1506.333,165.018,3
+cbs,agents2,100,cbsSolved,100,0,100
+cbs,agents2,100,prioFeasible,100,0,100
+cbs,agents2,100,comparable,100,0,100
+cbs,agents2,100,prioOptimal,97,0,100
+cbs,agents2,100,meanRatio,1.00484,0,100
+cbs,agents2,100,worstRatio,1.28571,0,100
+cbs,agents2,100,cbsMeanMs,0.153631,0,100
+cbs,agents2,100,prioMeanMs,0.258535,0,100
+cbs,agents4,100,cbsSolved,100,0,100
+cbs,agents4,100,prioFeasible,100,0,100
+cbs,agents4,100,comparable,100,0,100
+cbs,agents4,100,prioOptimal,78,0,100
+cbs,agents4,100,meanRatio,1.02596,0,100
+cbs,agents4,100,worstRatio,1.3,0,100
+cbs,agents4,100,cbsMeanMs,0.489675,0,100
+cbs,agents4,100,prioMeanMs,0.113832,0,100
+cbs,agents6,100,cbsSolved,100,0,100
+cbs,agents6,100,prioFeasible,100,0,100
+cbs,agents6,100,comparable,100,0,100
+cbs,agents6,100,prioOptimal,56,0,100
+cbs,agents6,100,meanRatio,1.03613,0,100
+cbs,agents6,100,worstRatio,1.31579,0,100
+cbs,agents6,100,cbsMeanMs,0.679579,0,100
+cbs,agents6,100,prioMeanMs,0.133873,0,100
+cbs,agents8,100,cbsSolved,100,0,100
+cbs,agents8,100,prioFeasible,100,0,100
+cbs,agents8,100,comparable,100,0,100
+cbs,agents8,100,prioOptimal,24,0,100
+cbs,agents8,100,meanRatio,1.0496,0,100
+cbs,agents8,100,worstRatio,1.23214,0,100
+cbs,agents8,100,cbsMeanMs,2.7256,0,100
+cbs,agents8,100,prioMeanMs,0.103718,0,100
+cbs,agents10,100,cbsSolved,99,0,100
+cbs,agents10,100,prioFeasible,100,0,100
+cbs,agents10,100,comparable,99,0,100
+cbs,agents10,100,prioOptimal,16,0,100
+cbs,agents10,100,meanRatio,1.05888,0,100
+cbs,agents10,100,worstRatio,1.29688,0,100
+cbs,agents10,100,cbsMeanMs,54.8474,0,100
+cbs,agents10,100,prioMeanMs,0.0874266,0,100
